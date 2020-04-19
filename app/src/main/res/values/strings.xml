@@ -3,4 +3,13 @@
     <string name="login">Login</string>
     <string name="_or">OR</string>
     <string name="register">Register</string>
+    <string name="please_wait">Please wait…</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="email_address">Email Address</string>
+    <string name="full_name">Full Name</string>
+    <string name="institute">Institute Name</string>
+    <string name="reg_no">Registration No</string>
+    <string name="_continue">Continue</string>
+    <string name="txt_terms">By clicking Continue, You agree to Terms and Conditions</string>
+    <string name="password">Password</string>
 </resources>
