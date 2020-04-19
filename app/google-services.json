@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "845271483057",
+    "firebase_url": "https://ra-easy.firebaseio.com",
+    "project_id": "ra-easy",
+    "storage_bucket": "ra-easy.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:845271483057:android:3aadd038845e6f49a0d890",
+        "android_client_info": {
+          "package_name": "com.bruce.raeasy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "845271483057-c3sv5djsh9bbm97pc61cltod7ogn2f1q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bruce.raeasy",
+            "certificate_hash": "4fe130f4b0f984d6fd948fd6deae7ad6300103df"
+          }
+        },
+        {
+          "client_id": "845271483057-jsp3n6o6hrnv2j05491kkc2du4cfo41f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJ9Ldlc3mgK5gBGKCeIeVpqcJSAiex1Io"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "845271483057-jsp3n6o6hrnv2j05491kkc2du4cfo41f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
