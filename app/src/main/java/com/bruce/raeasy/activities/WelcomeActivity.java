@@ -2,8 +2,8 @@ package com.bruce.raeasy.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,6 +13,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class WelcomeActivity extends AppCompatActivity {
 
+    private static final String TAG = "WelcomeActivity";
     private Button btnLogin, btnRegister;
     private FirebaseAuth mAuth;
 
@@ -42,7 +43,7 @@ public class WelcomeActivity extends AppCompatActivity {
             finish();
             startActivity(new Intent(this, HomeActivity.class));
         } else {
-            Toast.makeText(this, "Please Sign in", Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "onStart: Please sign in");
         }
     }
 }

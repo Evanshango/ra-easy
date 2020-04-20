@@ -50,7 +50,7 @@
                 android:id="@+id/textPhone"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
                 app:boxStrokeColor="?colorAccent"
                 app:errorEnabled="true"
                 android:layout_marginStart="32dp"
@@ -63,7 +63,6 @@
                     android:id="@+id/regPhone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
                     android:hint="@string/phone_number"
                     android:inputType="number" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -72,7 +71,7 @@
                 android:id="@+id/textEmail"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
                 app:boxStrokeColor="?colorAccent"
@@ -86,7 +85,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/email_address"
-                    android:layout_marginBottom="8dp"
                     android:inputType="textEmailAddress" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -94,7 +92,7 @@
                 android:id="@+id/textName"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
                 app:boxStrokeColor="?colorAccent"
@@ -108,7 +106,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/full_name"
-                    android:layout_marginBottom="8dp"
                     android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -116,7 +113,7 @@
                 android:id="@+id/textInstitute"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
                 app:boxStrokeColor="?colorAccent"
@@ -130,7 +127,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/institute"
-                    android:layout_marginBottom="8dp"
                     android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -138,7 +134,7 @@
                 android:id="@+id/textRegNo"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
                 app:boxStrokeColor="?colorAccent"
@@ -152,7 +148,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/reg_no"
-                    android:layout_marginBottom="8dp"
                     android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -160,7 +155,7 @@
                 android:id="@+id/textPassword"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
-                android:layout_height="60dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
                 app:boxStrokeColor="?colorAccent"
@@ -174,8 +169,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/password"
-                    android:inputType="text"
-                    android:layout_marginBottom="8dp"/>
+                    android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
@@ -190,6 +184,17 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textPassword" />
+
+            <ProgressBar
+                android:id="@+id/regProgress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:elevation="5dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/btnContinue"
+                app:layout_constraintEnd_toEndOf="@+id/btnContinue"
+                app:layout_constraintStart_toStartOf="@+id/btnContinue"
+                app:layout_constraintTop_toTopOf="@+id/btnContinue" />
 
             <TextView
                 android:id="@+id/txtTerms"

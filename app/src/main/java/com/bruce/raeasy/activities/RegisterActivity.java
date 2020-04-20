@@ -6,8 +6,10 @@ import androidx.appcompat.widget.Toolbar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +37,7 @@ public class RegisterActivity extends AppCompatActivity {
     private String phone, email, name, institute, regNo, password, createdAt;
     private TextView txtTerms;
     private TextInputLayout txtPhone, txtEmail, txtName, txtInstitute, txtRegNo, txtPassword;
+    private ProgressBar regProgress;
 
     //Firebase
     private FirebaseAuth mAuth;
@@ -101,17 +104,24 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void doRegister() {
+        regProgress.setVisibility(View.VISIBLE);
+        btnContinue.setEnabled(false);
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()){
                 FirebaseUser aUser = mAuth.getCurrentUser();
                 saveExtraUserInfo(aUser);
+                regProgress.setVisibility(View.GONE);
             } else {
-                String errMsg = Objects.requireNonNull(task.getException()).toString();
+                String errMsg = Objects.requireNonNull(task.getException()).getMessage();
                 Toast.makeText(this, errMsg, Toast.LENGTH_SHORT).show();
+                btnContinue.setEnabled(true);
+                regProgress.setVisibility(View.GONE);
             }
-        }).addOnFailureListener(e -> Toast.makeText(
-                this, "Check your internet connection", Toast.LENGTH_SHORT
-        ).show());
+        }).addOnFailureListener(e -> {
+            btnContinue.setEnabled(true);
+            regProgress.setVisibility(View.GONE);
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        });
     }
 
     private void saveExtraUserInfo(FirebaseUser aUser) {
@@ -151,6 +161,7 @@ public class RegisterActivity extends AppCompatActivity {
         txtInstitute = findViewById(R.id.textInstitute);
         txtRegNo = findViewById(R.id.textRegNo);
         txtPassword = findViewById(R.id.textPassword);
+        regProgress = findViewById(R.id.regProgress);
     }
 
     @Override

@@ -2,8 +2,10 @@ package com.bruce.raeasy.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +24,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText edEmail, edPassword;
     private String email, password;
     private TextInputLayout txtEmail, txtPassword;
+    private ProgressBar loginProgress;
 
     //Firebase
     private FirebaseAuth mAuth;
@@ -45,8 +48,8 @@ public class LoginActivity extends AppCompatActivity {
         email = edEmail.getText().toString().trim();
         password = edPassword.getText().toString().trim();
 
-        if (!email.isEmpty()){
-            if (!password.isEmpty()){
+        if (!email.isEmpty()) {
+            if (!password.isEmpty()) {
                 doLogin();
             } else {
                 txtPassword.setError("Password cannot be empty");
@@ -57,17 +60,23 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void doLogin() {
+        loginProgress.setVisibility(View.VISIBLE);
+        btnLogin.setEnabled(false);
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
-            if (task.isSuccessful()){
+            if (task.isSuccessful()) {
+                loginProgress.setVisibility(View.GONE);
                 Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show();
                 toHomeActivity();
             } else {
-                String errMsg = Objects.requireNonNull(task.getException()).toString();
+                String errMsg = Objects.requireNonNull(task.getException()).getMessage();
                 Toast.makeText(this, errMsg, Toast.LENGTH_SHORT).show();
+                loginProgress.setVisibility(View.GONE);
+                btnLogin.setEnabled(true);
             }
-        }).addOnFailureListener(e -> Toast.makeText(
-                this, "Check your internet connection", Toast.LENGTH_SHORT
-        ).show());
+        }).addOnFailureListener(e -> {
+            loginProgress.setVisibility(View.GONE);
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        });
     }
 
     private void toHomeActivity() {
@@ -82,6 +91,7 @@ public class LoginActivity extends AppCompatActivity {
         edPassword = findViewById(R.id.loginPassword);
         txtEmail = findViewById(R.id.txtLoginEmail);
         txtPassword = findViewById(R.id.txtLoginPassword);
+        loginProgress = findViewById(R.id.loginProgress);
     }
 
     @Override
