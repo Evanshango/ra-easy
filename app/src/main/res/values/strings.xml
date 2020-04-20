@@ -31,4 +31,13 @@
     <string name="barter_trade">Barter Trade Fragment</string>
     <string name="on_sale">On Sale Fragment</string>
     <string name="account">Account</string>
+    <string name="username">Username</string>
+    <string name="logout">Logout</string>
+    <string name="account_settings">Account Settings</string>
+    <string name="my_ads">My Ads</string>
+    <string name="shortlisted_ads">Shortlisted Ads</string>
+    <string name="share">Share</string>
+    <string name="rate_us">Rate Us</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="about_us">About Us</string>
 </resources>

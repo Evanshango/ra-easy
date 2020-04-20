@@ -81,7 +81,6 @@ public class HomeActivity extends AppCompatActivity {
 
     private void toAccount() {
         Intent intent = new Intent(this, AccountActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 

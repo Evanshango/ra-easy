@@ -37,24 +37,33 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="wrap_content"
+                android:layout_height="120dp"
+                android:src="@drawable/raeasy_logo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textPhone"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginEnd="32dp"
+                android:layout_height="60dp"
                 app:boxStrokeColor="?colorAccent"
                 app:errorEnabled="true"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toBottomOf="@id/logo">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/regPhone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
                     android:hint="@string/phone_number"
                     android:inputType="number" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -63,7 +72,7 @@
                 android:id="@+id/textEmail"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
                 app:boxStrokeColor="?colorAccent"
@@ -77,6 +86,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/email_address"
+                    android:layout_marginBottom="8dp"
                     android:inputType="textEmailAddress" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -84,7 +94,7 @@
                 android:id="@+id/textName"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
                 app:boxStrokeColor="?colorAccent"
@@ -98,6 +108,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/full_name"
+                    android:layout_marginBottom="8dp"
                     android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -105,7 +116,7 @@
                 android:id="@+id/textInstitute"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
                 app:boxStrokeColor="?colorAccent"
@@ -119,6 +130,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/institute"
+                    android:layout_marginBottom="8dp"
                     android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -126,7 +138,7 @@
                 android:id="@+id/textRegNo"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
                 app:boxStrokeColor="?colorAccent"
@@ -140,6 +152,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/reg_no"
+                    android:layout_marginBottom="8dp"
                     android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -147,7 +160,7 @@
                 android:id="@+id/textPassword"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="32dp"
                 app:boxStrokeColor="?colorAccent"
@@ -161,7 +174,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/password"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:layout_marginBottom="8dp"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
@@ -182,9 +196,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="32dp"
                 android:layout_marginEnd="32dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="24dp"
                 android:text="@string/txt_terms"
                 android:textAlignment="center"
                 android:textColor="@color/colorPrimary"

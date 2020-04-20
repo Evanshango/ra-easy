@@ -51,6 +51,7 @@
         android:src="@drawable/ic_camera"
         app:tint="@color/colorWhite"
         android:layout_gravity="bottom|end"
+        app:borderWidth="0dp"
         android:layout_margin="@dimen/fab_margin"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
