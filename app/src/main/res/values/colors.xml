@@ -8,4 +8,6 @@
     <color name="colorWhite">#FFFFFF</color>
     <color name="tab_txt_color">#828282</color>
     <color name="lightBackground">#D5D3D3</color>
+    <color name="colorRed">#FF0000</color>
+    <color name="colorGreen">#41C300</color>
 </resources>

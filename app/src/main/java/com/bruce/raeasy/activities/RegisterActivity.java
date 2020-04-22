@@ -127,7 +127,7 @@ public class RegisterActivity extends AppCompatActivity {
     private void saveExtraUserInfo(FirebaseUser aUser) {
         if (aUser != null){
             User user = new User(aUser.getUid(), phone, email, name, institute, regNo, createdAt);
-            usersRef.add(user).addOnCompleteListener(task -> {
+            usersRef.document(aUser.getUid()).set(user).addOnCompleteListener(task -> {
                 if (task.isSuccessful()){
                     toHomeActivity();
                 } else {

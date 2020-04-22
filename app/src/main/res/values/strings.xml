@@ -40,4 +40,27 @@
     <string name="rate_us">Rate Us</string>
     <string name="contact_us">Contact Us</string>
     <string name="about_us">About Us</string>
+    <string name="not_logged_in">No Logged in</string>
+    <string name="email_placeholder">john@doe.com</string>
+    <string name="open_camera">Open Camera</string>
+    <string name="open_gallery">Open Gallery</string>
+    <string name="item_name">Item Name</string>
+    <string name="item_desc">Item Description</string>
+    <string name="trade_type">Trade Type</string>
+    <string name="barter">Barter</string>
+    <string name="sell">Sell</string>
+    <string name="advert_duration">Advert Duration</string>
+    <string name="_4w">4w</string>
+    <string name="_2w">2w</string>
+    <string name="_8w">8w</string>
+    <string name="item_price">Item Price</string>
+    <string name="trade_in">Trade in Item</string>
+    <string name="Proceed">proceed</string>
+    <string name="txt_info">Click to Expand or Collapse</string>
+    <string name="complete">Complete</string>
+    <string name="payment_information">Payment Information</string>
+    <string name="amount_to_be_paid">Amount to be paid :</string>
+    <string name="mode">Mode :</string>
+    <string name="mpesa">MPesa</string>
+    <string name="airtel_money">Airtel Money</string>
 </resources>

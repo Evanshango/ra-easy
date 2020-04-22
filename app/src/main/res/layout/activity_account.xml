@@ -17,7 +17,11 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/account_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="55dp" />
+            android:layout_height="50dp"
+            app:titleTextColor="@color/colorWhite"
+            app:popupTheme="@style/Theme.MaterialComponents.Light"
+            android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
+            app:titleTextAppearance="@style/TextAppearance.AppCompat.Medium"/>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -54,18 +58,44 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/txtUsername"
+                <ImageView
+                    android:id="@+id/addImg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_add"
+                    app:layout_constraintBottom_toBottomOf="@+id/profileImage"
+                    app:layout_constraintEnd_toEndOf="@+id/profileImage" />
+
+                <LinearLayout
+                    android:id="@+id/linearLayout2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:padding="4dp"
-                    android:text="@string/username"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="@+id/profileImage"
+                    app:layout_constraintEnd_toStartOf="@+id/btnLogout"
                     app:layout_constraintStart_toEndOf="@+id/profileImage"
-                    app:layout_constraintTop_toTopOf="@+id/profileImage" />
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/txtUsername"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:padding="4dp"
+                        android:text="@string/username"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/txtEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:padding="4dp"
+                        android:text="@string/email_address"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/small_txt" />
+                </LinearLayout>
 
                 <Button
                     android:id="@+id/btnLogout"
@@ -76,6 +106,7 @@
                     app:layout_constraintBottom_toBottomOf="@+id/profileImage"
                     app:layout_constraintEnd_toEndOf="parent"
                     android:textSize="@dimen/small_txt"
+                    android:visibility="gone"
                     app:layout_constraintTop_toTopOf="@+id/profileImage" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
