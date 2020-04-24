@@ -140,9 +140,13 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void toHomeActivity() {
-        Intent intent = new Intent(this, HomeActivity.class);
-        startActivity(intent);
-        finish();
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null){
+            Intent intent = new Intent(this, HomeActivity.class);
+            intent.putExtra("userId", user.getUid());
+            startActivity(intent);
+            finish();
+        }
     }
 
     private void initViews() {

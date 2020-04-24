@@ -27,11 +27,15 @@ public class HomeActivity extends AppCompatActivity {
     private TabLayout homeTabs;
     private Toolbar mToolbar;
     private FloatingActionButton uploadItem;
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        Intent intent = getIntent();
+        userId = intent.getStringExtra("userId");
 
         initViews();
 
@@ -40,7 +44,11 @@ public class HomeActivity extends AppCompatActivity {
 
         setUpViewPager();
 
-        uploadItem.setOnClickListener(v -> startActivity(new Intent(this, UploadItemActivity.class)));
+        uploadItem.setOnClickListener(v -> {
+            Intent intent1 = new Intent(this, UploadItemActivity.class);
+            intent.putExtra("userId", userId);
+            startActivity(intent1);
+        });
     }
 
     private void setUpViewPager() {

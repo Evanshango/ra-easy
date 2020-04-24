@@ -54,7 +54,7 @@
     <string name="_2w">2w</string>
     <string name="_8w">8w</string>
     <string name="item_price">Item Price</string>
-    <string name="trade_in">Trade in Item</string>
+    <string name="trade_in">Trade in Item (Optional)</string>
     <string name="Proceed">proceed</string>
     <string name="txt_info">Click to Expand or Collapse</string>
     <string name="complete">Complete</string>

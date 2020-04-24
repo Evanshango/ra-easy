@@ -14,6 +14,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.bruce.raeasy.R;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Objects;
 
@@ -65,7 +66,6 @@ public class LoginActivity extends AppCompatActivity {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 loginProgress.setVisibility(View.GONE);
-                Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show();
                 toHomeActivity();
             } else {
                 String errMsg = Objects.requireNonNull(task.getException()).getMessage();
@@ -80,8 +80,14 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void toHomeActivity() {
-        finish();
-        startActivity(new Intent(this, HomeActivity.class));
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null){
+            Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, HomeActivity.class);
+            intent.putExtra("userId", user.getUid());
+            startActivity(intent);
+            finish();
+        }
     }
 
     private void initViews() {

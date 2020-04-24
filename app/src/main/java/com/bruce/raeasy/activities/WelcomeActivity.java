@@ -40,8 +40,9 @@ public class WelcomeActivity extends AppCompatActivity {
         super.onStart();
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null){
-            finish();
-            startActivity(new Intent(this, HomeActivity.class));
+            Intent intent = new Intent(this, HomeActivity.class);
+            intent.putExtra("userId", user.getUid());
+            startActivity(intent);
         } else {
             Log.d(TAG, "onStart: Please sign in");
         }
