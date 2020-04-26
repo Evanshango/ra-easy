@@ -42,6 +42,7 @@
             app:layout_constraintTop_toBottomOf="@+id/upload_app_bar" />
 
         <TextView
+            android:id="@+id/txtExpand"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -130,6 +131,7 @@
             android:background="@drawable/input_bg"
             android:hint="@string/item_name"
             android:padding="14dp"
+            android:inputType="text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tabIndicators" />
@@ -145,6 +147,7 @@
             android:gravity="start"
             android:hint="@string/item_desc"
             android:padding="14dp"
+            android:inputType="textMultiLine"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/itemName" />
@@ -267,6 +270,7 @@
             android:hint="@string/trade_in"
             android:padding="14dp"
             app:layout_constraintEnd_toEndOf="parent"
+            android:inputType="text"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/itemPrice" />
 

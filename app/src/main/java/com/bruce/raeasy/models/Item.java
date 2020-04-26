@@ -7,16 +7,17 @@ import java.util.List;
 
 public class Item implements Parcelable {
 
-    private String id, name, desc, tradeType, duration, price, tradeIn, amount, date, ownerId;
-    private List<ImageUri> imageUris;
+    private String itemId, name, desc, tradeType, duration, price, tradeIn, amount, date, ownerId,
+            transCode;
+    private List<ImageUrl> imageUrls;
 
     public Item() {
     }
 
-    public Item(String id, String name, String desc, String tradeType, String duration,
+    public Item(String itemId, String name, String desc, String tradeType, String duration,
                 String price, String tradeIn, String amount, String date, String ownerId,
-                List<ImageUri> imageUris) {
-        this.id = id;
+                String transCode, List<ImageUrl> imageUrls) {
+        this.itemId = itemId;
         this.name = name;
         this.desc = desc;
         this.tradeType = tradeType;
@@ -26,11 +27,12 @@ public class Item implements Parcelable {
         this.amount = amount;
         this.date = date;
         this.ownerId = ownerId;
-        this.imageUris = imageUris;
+        this.transCode = transCode;
+        this.imageUrls = imageUrls;
     }
 
     protected Item(Parcel in) {
-        id = in.readString();
+        itemId = in.readString();
         name = in.readString();
         desc = in.readString();
         tradeType = in.readString();
@@ -40,12 +42,12 @@ public class Item implements Parcelable {
         amount = in.readString();
         date = in.readString();
         ownerId = in.readString();
-        imageUris = in.createTypedArrayList(ImageUri.CREATOR);
+        transCode = in.readString();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(id);
+        dest.writeString(itemId);
         dest.writeString(name);
         dest.writeString(desc);
         dest.writeString(tradeType);
@@ -55,7 +57,7 @@ public class Item implements Parcelable {
         dest.writeString(amount);
         dest.writeString(date);
         dest.writeString(ownerId);
-        dest.writeTypedList(imageUris);
+        dest.writeString(transCode);
     }
 
     @Override
@@ -75,12 +77,12 @@ public class Item implements Parcelable {
         }
     };
 
-    public String getId() {
-        return id;
+    public String getItemId() {
+        return itemId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setItemId(String itemId) {
+        this.itemId = itemId;
     }
 
     public String getName() {
@@ -155,11 +157,19 @@ public class Item implements Parcelable {
         this.ownerId = ownerId;
     }
 
-    public List<ImageUri> getImageUris() {
-        return imageUris;
+    public String getTransCode() {
+        return transCode;
     }
 
-    public void setImageUris(List<ImageUri> imageUris) {
-        this.imageUris = imageUris;
+    public void setTransCode(String transCode) {
+        this.transCode = transCode;
+    }
+
+    public List<ImageUrl> getImageUrls() {
+        return imageUrls;
+    }
+
+    public void setImageUrls(List<ImageUrl> imageUrls) {
+        this.imageUrls = imageUrls;
     }
 }

@@ -23,9 +23,12 @@ import androidx.viewpager.widget.ViewPager;
 import com.bruce.raeasy.R;
 import com.bruce.raeasy.adapters.ImagesUriPagerAdapter;
 import com.bruce.raeasy.fragments.ImageItemUriFragment;
+import com.bruce.raeasy.models.ExtraImgUri;
 import com.bruce.raeasy.models.ImageUri;
 import com.bruce.raeasy.models.Item;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +40,7 @@ public class UploadItemActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     private ImageView expand;
     private LinearLayout expandOptions;
-    private TextView camera, gallery;
+    private TextView camera, gallery, txtExpand;
     private EditText itemName, itemDesc, itemPrice, tradeInItem;
     private TabLayout mTabLayout;
     private ViewPager imgViewPager;
@@ -52,8 +55,11 @@ public class UploadItemActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_item);
 
-        Intent intent = getIntent();
-        userId = intent.getStringExtra("userId");
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser user = auth.getCurrentUser();
+        if (user != null){
+            userId = user.getUid();
+        }
 
         initViews();
 
@@ -64,21 +70,26 @@ public class UploadItemActivity extends AppCompatActivity {
         }
 
         expand.setOnClickListener(v -> {
-            if (expandOptions.getVisibility() == View.GONE) {
-                expandOptions.setVisibility(View.VISIBLE);
-            } else {
-                expandOptions.setVisibility(View.GONE);
-            }
+            expandedLayout();
         });
 
         btnProceed.setOnClickListener(v -> showPaymentDialog());
 
         camera.setOnClickListener(v -> openCamera());
         gallery.setOnClickListener(v -> openGallery());
+        txtExpand.setOnClickListener(v -> expandedLayout());
 
         listenToTradeTypeSelection();
 
         listenToAdvertDurChange();
+    }
+
+    private void expandedLayout() {
+        if (expandOptions.getVisibility() == View.GONE) {
+            expandOptions.setVisibility(View.VISIBLE);
+        } else {
+            expandOptions.setVisibility(View.GONE);
+        }
     }
 
     private void listenToAdvertDurChange() {
@@ -146,9 +157,10 @@ public class UploadItemActivity extends AppCompatActivity {
 
     private void proceedToPayment() {
         Item item = new Item("", name, desc, tradeType, duration, price, tradeIn, "",
-                "", userId, mImageUris);
+                "", userId, "", null);
         Intent intent = new Intent(this, PaymentActivity.class);
         intent.putExtra("item", item);
+        intent.putExtra("imageUris", new ExtraImgUri(mImageUris));
         startActivity(intent);
     }
 
@@ -217,6 +229,7 @@ public class UploadItemActivity extends AppCompatActivity {
         rbTwo = findViewById(R.id.rbTwo);
         rbFour = findViewById(R.id.rbFour);
         rbEight = findViewById(R.id.rbEight);
+        txtExpand = findViewById(R.id.txtExpand);
     }
 
     @Override

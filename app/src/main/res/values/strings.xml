@@ -63,4 +63,11 @@
     <string name="mode">Mode :</string>
     <string name="mpesa">MPesa</string>
     <string name="airtel_money">Airtel Money</string>
+    <string name="message_placeholder">Message Placeholder</string>
+    <string name="payment_page_info">Dear %s to upload item: %s, choose your preferred mode of payment to proceed then press Complete to finalize your item upload</string>
+    <string name="confirm_mpesa_number">Confirm MPESA Number</string>
+    <string name="phone">Phone</string>
+    <string name="confirm_airtelmoney_number">Confirm AirtelMoney Number</string>
+    <string name="please_copy_this_code_somewhere">Confirmation Code</string>
+    <string name="make_payment">Make Payment</string>
 </resources>

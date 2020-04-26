@@ -23,11 +23,21 @@ public class WelcomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_welcome);
 
         mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null){
+            toHomeActivity(user.getUid());
+        }
 
         initViews();
 
         btnLogin.setOnClickListener(v -> startActivity(new Intent(this, LoginActivity.class)));
         btnRegister.setOnClickListener(v -> startActivity(new Intent(this, RegisterActivity.class)));
+    }
+
+    private void toHomeActivity(String uid) {
+        Intent intent = new Intent(this, HomeActivity.class);
+        intent.putExtra("userId", uid);
+        startActivity(intent);
     }
 
     private void initViews() {
@@ -40,9 +50,7 @@ public class WelcomeActivity extends AppCompatActivity {
         super.onStart();
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null){
-            Intent intent = new Intent(this, HomeActivity.class);
-            intent.putExtra("userId", user.getUid());
-            startActivity(intent);
+            toHomeActivity(user.getUid());
         } else {
             Log.d(TAG, "onStart: Please sign in");
         }
