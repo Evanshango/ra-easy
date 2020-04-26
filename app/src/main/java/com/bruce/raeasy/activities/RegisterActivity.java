@@ -143,7 +143,6 @@ public class RegisterActivity extends AppCompatActivity {
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null){
             Intent intent = new Intent(this, HomeActivity.class);
-            intent.putExtra("userId", user.getUid());
             startActivity(intent);
             finish();
         }

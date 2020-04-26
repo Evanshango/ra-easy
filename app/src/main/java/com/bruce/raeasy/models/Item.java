@@ -172,4 +172,22 @@ public class Item implements Parcelable {
     public void setImageUrls(List<ImageUrl> imageUrls) {
         this.imageUrls = imageUrls;
     }
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "itemId='" + itemId + '\'' +
+                ", name='" + name + '\'' +
+                ", desc='" + desc + '\'' +
+                ", tradeType='" + tradeType + '\'' +
+                ", duration='" + duration + '\'' +
+                ", price='" + price + '\'' +
+                ", tradeIn='" + tradeIn + '\'' +
+                ", amount='" + amount + '\'' +
+                ", date='" + date + '\'' +
+                ", ownerId='" + ownerId + '\'' +
+                ", transCode='" + transCode + '\'' +
+                ", imageUrls=" + imageUrls +
+                '}';
+    }
 }

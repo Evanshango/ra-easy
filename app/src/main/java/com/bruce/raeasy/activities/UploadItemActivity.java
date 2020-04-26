@@ -69,9 +69,7 @@ public class UploadItemActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        expand.setOnClickListener(v -> {
-            expandedLayout();
-        });
+        expand.setOnClickListener(v -> expandedLayout());
 
         btnProceed.setOnClickListener(v -> showPaymentDialog());
 

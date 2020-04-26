@@ -13,4 +13,6 @@ public class Constants {
     public static final String TWO_WEEKS = "250";
     public static final String FOUR_WEEKS = "500";
     public static final String EIGHT_WEEKS = "750";
+    public static final String TRADE_TYPE = "tradeType";
+    public static final String DATE = "date";
 }

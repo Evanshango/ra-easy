@@ -18,6 +18,8 @@ import com.bruce.raeasy.fragments.BarterTradeFragment;
 import com.bruce.raeasy.fragments.OnSaleFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Objects;
 
@@ -34,8 +36,13 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        Intent intent = getIntent();
-        userId = intent.getStringExtra("userId");
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser user = auth.getCurrentUser();
+        if (user != null){
+            userId = user.getUid();
+        } else {
+            toWelcomeActivity();
+        }
 
         initViews();
 
@@ -45,10 +52,16 @@ public class HomeActivity extends AppCompatActivity {
         setUpViewPager();
 
         uploadItem.setOnClickListener(v -> {
-            Intent intent1 = new Intent(this, UploadItemActivity.class);
+            Intent intent = new Intent(this, UploadItemActivity.class);
             intent.putExtra("userId", userId);
-            startActivity(intent1);
+            startActivity(intent);
         });
+    }
+
+    private void toWelcomeActivity() {
+        Intent intent = new Intent(this, WelcomeActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void setUpViewPager() {

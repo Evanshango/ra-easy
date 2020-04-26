@@ -16,16 +16,16 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".activities.ItemViewActivity" />
         <activity android:name=".activities.AccountActivity" />
-        <activity android:name=".activities.HomeActivity" />
-        <activity android:name=".activities.RegisterActivity" />
-        <activity android:name=".activities.LoginActivity" />
-        <activity android:name=".activities.WelcomeActivity">
+        <activity android:name=".activities.HomeActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activities.RegisterActivity" />
+        <activity android:name=".activities.LoginActivity" />
+        <activity android:name=".activities.WelcomeActivity"/>
     </application>
 
 </manifest>
