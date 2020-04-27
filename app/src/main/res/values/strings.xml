@@ -70,4 +70,10 @@
     <string name="confirm_airtelmoney_number">Confirm AirtelMoney Number</string>
     <string name="please_copy_this_code_somewhere">Confirmation Code</string>
     <string name="make_payment">Make Payment</string>
+    <string name="name_of_item">Name of Item</string>
+    <string name="description">Description</string>
+    <string name="trade_in_item">Trade in Item</string>
+    <string name="date_posted">Date Posted</string>
+    <string name="undefined">undefined</string>
+    <string name="anonymous">Anonymous</string>
 </resources>

@@ -11,18 +11,21 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.bruce.raeasy.R;
-import com.bruce.raeasy.models.ImageUri;
+import com.bruce.raeasy.models.ImageUrl;
+import com.bumptech.glide.Glide;
 
-public class ImageItemUriFragment extends Fragment {
+import java.util.Objects;
+
+public class ImageItemUrlFragment extends Fragment {
 
     private ImageView mImage;
-    private ImageUri mImageUri;
+    private ImageUrl mImageUrl;
 
-    public static ImageItemUriFragment getInstance(ImageUri imageUri){
-        ImageItemUriFragment fragment = new ImageItemUriFragment();
-        if (imageUri != null){
+    public static ImageItemUrlFragment getInstance(ImageUrl imageUrl){
+        ImageItemUrlFragment fragment = new ImageItemUrlFragment();
+        if (imageUrl != null){
             Bundle bundle = new Bundle();
-            bundle.putParcelable("imageUri", imageUri);
+            bundle.putParcelable("imageUrl", imageUrl);
             fragment.setArguments(bundle);
         }
         return  fragment;
@@ -32,7 +35,7 @@ public class ImageItemUriFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null){
-            mImageUri = getArguments().getParcelable("imageUri");
+            mImageUrl = getArguments().getParcelable("imageUrl");
         }
     }
 
@@ -40,20 +43,20 @@ public class ImageItemUriFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.images_uri_placeholder, container, false);
+        return inflater.inflate(R.layout.images_url_placeholder, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        mImage = view.findViewById(R.id.itemImagesUri);
+        mImage = view.findViewById(R.id.itemImagesUrl);
         init();
     }
 
     private void init(){
-        if (mImageUri != null){
-            mImage.setImageURI(mImageUri.getUri());
-        } else {
-            mImage.setImageURI(null);
+        if (mImageUrl != null){
+            Glide.with(requireContext())
+                    .load(mImageUrl.getImgUrl())
+                    .into(mImage);
         }
     }
 }
