@@ -15,4 +15,7 @@ public class Constants {
     public static final String EIGHT_WEEKS = "750";
     public static final String TRADE_TYPE = "tradeType";
     public static final String DATE = "date";
+    public static final String FAVORITES = "favorites";
+    public static final String ITEM_ID = "itemId";
+    public static final String USER_ID = "userId";
 }

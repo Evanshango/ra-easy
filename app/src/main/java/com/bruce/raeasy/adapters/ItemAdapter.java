@@ -12,7 +12,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bruce.raeasy.R;
-import com.bruce.raeasy.models.ImageUrl;
+import com.bruce.raeasy.models.Favorite;
 import com.bruce.raeasy.models.Item;
 import com.bumptech.glide.Glide;
 
@@ -23,6 +23,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
     private Context mContext;
     private ItemInteraction mItemInteraction;
     private List<Item> mItems;
+    private List<Favorite> mFavorites;
 
     public ItemAdapter(Context context, ItemInteraction itemInteraction) {
         mContext = context;
@@ -47,8 +48,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
         return mItems.size();
     }
 
-    public void setData(List<Item> items){
+    public void setData(List<Item> items, List<Favorite> favorites){
         mItems = items;
+        mFavorites = favorites;
         notifyDataSetChanged();
     }
 
@@ -74,7 +76,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
 
         @Override
         public void onClick(View v) {
-            mItemInteraction.itemClicked(v, mItems.get(getAdapterPosition()));
+            mItemInteraction.itemClicked(v, mItems.get(getAdapterPosition()), favImg);
         }
 
         void bind(Item item) {
@@ -84,11 +86,21 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
             Glide.with(mContext)
                     .load(item.getImageUrls().get(0).getImgUrl())
                     .into(itemImg);
+
+            toggleFavIcon(item);
+        }
+
+        private void toggleFavIcon(Item item) {
+            for (Favorite favorite : mFavorites){
+                if (favorite.getItemId().equals(item.getItemId())){
+                    favImg.setImageResource(R.drawable.ic_favorite_filled);
+                }
+            }
         }
     }
 
     public interface ItemInteraction {
 
-        void itemClicked(View view, Item item);
+        void itemClicked(View view, Item item, ImageView favImg);
     }
 }

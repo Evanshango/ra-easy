@@ -9,7 +9,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
@@ -19,6 +18,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.bruce.raeasy.R;
 import com.bruce.raeasy.adapters.ImagesUrlPagerAdapter;
 import com.bruce.raeasy.fragments.ImageItemUrlFragment;
+import com.bruce.raeasy.models.Favorite;
 import com.bruce.raeasy.models.ImageUrl;
 import com.bruce.raeasy.models.Item;
 import com.bruce.raeasy.models.User;
@@ -26,20 +26,26 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.bruce.raeasy.utils.Constants.FAVORITES;
+import static com.bruce.raeasy.utils.Constants.SHORT_DATE;
 import static com.bruce.raeasy.utils.Constants.USERS_REF;
 
-public class ItemViewActivity extends AppCompatActivity {
+public class ItemViewActivity extends BaseActivity {
 
     private Toolbar mToolbar;
     private TabLayout itemTabLayout;
     private ViewPager itemViewPager;
-    private String name, description, price, tradeIn, datePosted, traderId, userPhone;
+    private String name, description, price, tradeIn, datePosted, traderId, userPhone, createdAt;
+    private String itemId, userId;
     private List<ImageUrl> imageUrls;
     private TextView itemViewName, itemViewDesc, itemViewPrice, itemViewTradeIn, itemViewDatePosted;
     private ImageView imgFav;
@@ -48,7 +54,7 @@ public class ItemViewActivity extends AppCompatActivity {
     private ConstraintLayout traderProfile;
 
     //Firebase
-    private CollectionReference usersRef;
+    private CollectionReference usersRef, favRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,10 +63,13 @@ public class ItemViewActivity extends AppCompatActivity {
 
         FirebaseFirestore database = FirebaseFirestore.getInstance();
         usersRef = database.collection(USERS_REF);
+        favRef = database.collection(FAVORITES);
+        createdAt = new SimpleDateFormat(SHORT_DATE, Locale.getDefault()).format(new Date());
 
         Intent intent = getIntent();
         Item item = intent.getParcelableExtra("item");
         if (item != null) {
+            itemId = item.getItemId();
             name = item.getName();
             description = item.getDesc();
             price = item.getPrice();
@@ -78,6 +87,8 @@ public class ItemViewActivity extends AppCompatActivity {
 
         loadItemImages();
 
+        checkIfItemIsFavorite();
+
         populateItemInfo();
 
         fetchTraderDetails();
@@ -87,6 +98,23 @@ public class ItemViewActivity extends AppCompatActivity {
         downloadImg.setOnClickListener(v -> downloadItemImage());
 
         traderProfile.setOnClickListener(v -> openDialer());
+    }
+
+    private void checkIfItemIsFavorite() {
+        favRef.get().addOnSuccessListener(queryDocumentSnapshots -> {
+           if (!queryDocumentSnapshots.isEmpty()){
+               List<Favorite> favorites = queryDocumentSnapshots.toObjects(Favorite.class);
+               for (Favorite favorite : favorites){
+                   checkItemMatch(favorite);
+               }
+           }
+        });
+    }
+
+    private void checkItemMatch(Favorite favorite) {
+        if (itemId.equals(favorite.getItemId())){
+            imgFav.setImageResource(R.drawable.ic_favorite_filled);
+        }
     }
 
     private void openDialer() {
@@ -114,6 +142,7 @@ public class ItemViewActivity extends AppCompatActivity {
                 userPhone = user.getPhone();
                 traderName.setText(user.getFullName());
                 traderPhone.setText(userPhone);
+                userId = user.getId();
             } else {
                 traderName.setText(R.string.anonymous);
                 traderPhone.setText(R.string.undefined);
@@ -126,7 +155,9 @@ public class ItemViewActivity extends AppCompatActivity {
     }
 
     private void addToFavorite() {
-        Toast.makeText(this, "Adding to favorite", Toast.LENGTH_SHORT).show();
+        String favId = favRef.document().getId();
+        Favorite favorite = new Favorite(favId, itemId, createdAt, userId);
+        addFavorite(imgFav, favorite, favRef);
     }
 
     private void populateItemInfo() {
