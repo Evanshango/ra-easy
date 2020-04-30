@@ -120,7 +120,7 @@
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_my_adds"
                 android:drawablePadding="8dp"
-                android:text="@string/my_ads"
+                android:text="@string/my_items"
                 android:padding="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

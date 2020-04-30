@@ -1,9 +1,5 @@
 package com.bruce.raeasy.activities;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
@@ -14,6 +10,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.bruce.raeasy.R;
 import com.bruce.raeasy.models.User;
@@ -31,7 +31,7 @@ import java.util.Objects;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.bruce.raeasy.utils.Constants.GALLERY_PICK;
-import static com.bruce.raeasy.utils.Constants.UPLOADS;
+import static com.bruce.raeasy.utils.Constants.PROFILE;
 import static com.bruce.raeasy.utils.Constants.USERS_REF;
 
 public class AccSettingsActivity extends AppCompatActivity {
@@ -55,7 +55,7 @@ public class AccSettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_acc_settings);
 
         FirebaseFirestore database = FirebaseFirestore.getInstance();
-        mStorageReference = FirebaseStorage.getInstance().getReference(UPLOADS);
+        mStorageReference = FirebaseStorage.getInstance().getReference(PROFILE);
         usersRef = database.collection(USERS_REF);
 
         initViews();

@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -16,9 +17,7 @@ import com.bruce.raeasy.activities.HomeActivity;
 import com.bruce.raeasy.activities.ItemViewActivity;
 import com.bruce.raeasy.adapters.ItemAdapter;
 import com.bruce.raeasy.models.Item;
-import com.bruce.raeasy.utils.BarterEvent;
 import com.bruce.raeasy.utils.SellEvent;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -38,8 +37,8 @@ public class OnSaleFragment extends Fragment implements ItemAdapter.ItemInteract
     private RecyclerView onSaleRecycler;
     private ItemAdapter mItemAdapter;
     private ProgressBar onSaleLoader;
+    private TextView noSellItems;
     private String userId;
-    private List<Item> mItems = new ArrayList<>();
 
     //Firebase
     private CollectionReference itemsRef;
@@ -67,28 +66,38 @@ public class OnSaleFragment extends Fragment implements ItemAdapter.ItemInteract
     }
 
     private void populateRecycler(List<Item> items) {
-        if (items != null) {
+        List<Item> itemList = new ArrayList<>();
+        if (items.size() > 0) {
+            noSellItems.setVisibility(View.GONE);
             onSaleLoader.setVisibility(View.GONE);
-            GridLayoutManager manager = new GridLayoutManager(requireContext(), 2);
-            onSaleRecycler.setHasFixedSize(true);
-            onSaleRecycler.setLayoutManager(manager);
-            mItemAdapter.setData(items, userId);
+            itemList.clear();
+            itemList.addAll(items);
+            loadItems(itemList);
         } else {
+            itemList.clear();
+            loadItems(itemList);
+            noSellItems.setVisibility(View.VISIBLE);
             onSaleLoader.setVisibility(View.GONE);
-            Snackbar.make(onSaleRecycler, "No Items found", Snackbar.LENGTH_SHORT).show();
         }
+    }
+
+    private void loadItems(List<Item> itemList) {
+        GridLayoutManager manager = new GridLayoutManager(requireContext(), 2);
+        onSaleRecycler.setHasFixedSize(true);
+        onSaleRecycler.setLayoutManager(manager);
+        mItemAdapter.setData(itemList, userId);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void observeBarterItems(SellEvent event){
-        mItems.clear();
-        mItems.addAll(event.getItems());
-        populateRecycler(mItems);
+        onSaleLoader.setVisibility(View.VISIBLE);
+        populateRecycler(event.getItems());
     }
 
     private void initViews(View view) {
         onSaleRecycler = view.findViewById(R.id.onSaleRecycler);
         onSaleLoader = view.findViewById(R.id.onSaleLoader);
+        noSellItems = view.findViewById(R.id.txtNoSellItems);
     }
 
     @Override
@@ -110,6 +119,7 @@ public class OnSaleFragment extends Fragment implements ItemAdapter.ItemInteract
     private void toItemViewActivity(Item item) {
         Intent intent = new Intent(requireContext(), ItemViewActivity.class);
         intent.putExtra("item", item);
+        intent.putExtra("userId", userId);
         startActivity(intent);
     }
 

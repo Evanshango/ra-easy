@@ -72,7 +72,7 @@ public class AccountActivity extends AppCompatActivity implements RatingDialog.R
         btnLogout.setOnClickListener(v -> logoutUser());
 
         myAds.setOnClickListener(v -> {
-            Intent intent = new Intent(this, MyAdsActivity.class);
+            Intent intent = new Intent(this, MyItemsActivity.class);
             intent.putExtra("userId", userId);
             startActivity(intent);
         });

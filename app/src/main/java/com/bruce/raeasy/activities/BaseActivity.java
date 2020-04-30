@@ -34,7 +34,7 @@ class BaseActivity extends AppCompatActivity {
         }
     }
 
-    private void addToList(
+    public void addToList(
             List<String> userIds, CollectionReference itemsRef, String itemId, String message
     ) {
         Map<String, Object> favMap = new HashMap<>();
@@ -45,7 +45,7 @@ class BaseActivity extends AppCompatActivity {
         ).show());
     }
 
-    private void removeFromList(
+    public void removeFromList(
             String userId, CollectionReference itemsRef, String itemId, List<String> userIdList
     ) {
         userIdList.remove(userId);

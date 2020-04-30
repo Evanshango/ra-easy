@@ -186,4 +186,23 @@ public class Item implements Parcelable {
     public void setUserIds(List<String> userIds) {
         this.userIds = userIds;
     }
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "itemId='" + itemId + '\'' +
+                ", name='" + name + '\'' +
+                ", desc='" + desc + '\'' +
+                ", tradeType='" + tradeType + '\'' +
+                ", duration='" + duration + '\'' +
+                ", price='" + price + '\'' +
+                ", tradeIn='" + tradeIn + '\'' +
+                ", amount='" + amount + '\'' +
+                ", date='" + date + '\'' +
+                ", ownerId='" + ownerId + '\'' +
+                ", transCode='" + transCode + '\'' +
+                ", imageUrls=" + imageUrls +
+                ", userIds=" + userIds +
+                '}';
+    }
 }

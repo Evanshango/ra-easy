@@ -99,6 +99,8 @@ public class HomeActivity extends BaseActivity {
                 items.clear();
                 items.addAll(queryDocumentSnapshots.toObjects(Item.class));
                 emitSaleItems(items);
+            } else {
+                emitSaleItems(null);
             }
         });
     }
@@ -117,11 +119,13 @@ public class HomeActivity extends BaseActivity {
                 Toast.makeText(this, "Fetching Items error", Toast.LENGTH_SHORT).show();
                 return;
             }
-            if (queryDocumentSnapshots != null){
+            if (queryDocumentSnapshots != null) {
                 List<Item> items = new ArrayList<>();
                 items.clear();
                 items.addAll(queryDocumentSnapshots.toObjects(Item.class));
                 emitBarterItems(items);
+            } else {
+                emitBarterItems(null);
             }
         });
     }

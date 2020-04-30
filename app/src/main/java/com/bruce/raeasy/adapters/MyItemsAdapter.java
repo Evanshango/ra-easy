@@ -17,23 +17,23 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
-public class MyAdsAdapter extends RecyclerView.Adapter<MyAdsAdapter.MyAdHolder> {
+public class MyItemsAdapter extends RecyclerView.Adapter<MyItemsAdapter.MyAdHolder> {
 
     private Context mContext;
     private List<Item> mItems;
-    private AdInteraction mAdInteraction;
+    private MyItemInteraction mMyItemInteraction;
 
-    public MyAdsAdapter(Context context, AdInteraction adInteraction) {
+    public MyItemsAdapter(Context context, MyItemInteraction myItemInteraction) {
         mContext = context;
-        mAdInteraction = adInteraction;
+        mMyItemInteraction = myItemInteraction;
     }
 
     @NonNull
     @Override
     public MyAdHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.my_ads_item, parent, false);
-        return new MyAdHolder(view, mAdInteraction);
+        View view = inflater.inflate(R.layout.my_items, parent, false);
+        return new MyAdHolder(view, mMyItemInteraction);
     }
 
     @Override
@@ -43,24 +43,24 @@ public class MyAdsAdapter extends RecyclerView.Adapter<MyAdsAdapter.MyAdHolder> 
 
     @Override
     public int getItemCount() {
-        return mItems.size();
+        return mItems != null ? mItems.size() : 0;
     }
 
-    public void setData(List<Item> items){
+    public void setData(List<Item> items) {
         mItems = items;
         notifyDataSetChanged();
     }
 
     class MyAdHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        AdInteraction mAdInteraction;
+        MyItemInteraction mMyItemInteraction;
         LinearLayout itemCard;
         TextView deleteAd, name, tradeIn, datePosted;
         ImageView adImg;
 
-        MyAdHolder(@NonNull View itemView, AdInteraction adInteraction) {
+        MyAdHolder(@NonNull View itemView, MyItemInteraction myItemInteraction) {
             super(itemView);
-            mAdInteraction = adInteraction;
+            mMyItemInteraction = myItemInteraction;
             itemCard = itemView.findViewById(R.id.itemCard);
             deleteAd = itemView.findViewById(R.id.deleteAd);
             adImg = itemView.findViewById(R.id.adImg);
@@ -73,7 +73,7 @@ public class MyAdsAdapter extends RecyclerView.Adapter<MyAdsAdapter.MyAdHolder> 
 
         @Override
         public void onClick(View v) {
-            mAdInteraction.adClicked(mItems.get(getAdapterPosition()));
+            mMyItemInteraction.itemClicked(mItems.get(getAdapterPosition()));
         }
 
         void bind(Item item) {
@@ -87,8 +87,8 @@ public class MyAdsAdapter extends RecyclerView.Adapter<MyAdsAdapter.MyAdHolder> 
         }
     }
 
-    public interface AdInteraction{
+    public interface MyItemInteraction {
 
-        void adClicked(Item item);
+        void itemClicked(Item item);
     }
 }

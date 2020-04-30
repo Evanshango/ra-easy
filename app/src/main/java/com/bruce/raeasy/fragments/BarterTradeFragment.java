@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -17,7 +18,6 @@ import com.bruce.raeasy.activities.ItemViewActivity;
 import com.bruce.raeasy.adapters.ItemAdapter;
 import com.bruce.raeasy.models.Item;
 import com.bruce.raeasy.utils.BarterEvent;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
@@ -38,7 +38,7 @@ public class BarterTradeFragment extends Fragment implements ItemAdapter.ItemInt
     private ItemAdapter mItemAdapter;
     private ProgressBar barterLoader;
     private String userId;
-    private List<Item> mItems = new ArrayList<>();
+    private TextView noItems;
     private CollectionReference itemsRef;
 
     @Override
@@ -63,28 +63,38 @@ public class BarterTradeFragment extends Fragment implements ItemAdapter.ItemInt
     }
 
     private void populateRecycler(List<Item> items) {
-        if (items != null) {
+        List<Item> itemList = new ArrayList<>();
+        if (items.size() > 0) {
             barterLoader.setVisibility(View.GONE);
-            GridLayoutManager manager = new GridLayoutManager(requireContext(), 2);
-            barterRecycler.setHasFixedSize(true);
-            barterRecycler.setLayoutManager(manager);
-            mItemAdapter.setData(items, userId);
+            noItems.setVisibility(View.GONE);
+            itemList.clear();
+            itemList.addAll(items);
+            loadItems(itemList);
         } else {
+            itemList.clear();
+            loadItems(itemList);
             barterLoader.setVisibility(View.GONE);
-            Snackbar.make(barterRecycler, "No Items found", Snackbar.LENGTH_SHORT).show();
+            noItems.setVisibility(View.VISIBLE);
         }
     }
 
+    private void loadItems(List<Item> itemList) {
+        GridLayoutManager manager = new GridLayoutManager(requireContext(), 2);
+        barterRecycler.setHasFixedSize(true);
+        barterRecycler.setLayoutManager(manager);
+        mItemAdapter.setData(itemList, userId);
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void observeBarterItems(BarterEvent event){
-        mItems.clear();
-        mItems.addAll(event.getItems());
-        populateRecycler(mItems);
+    public void observeBarterItems(BarterEvent event) {
+        barterLoader.setVisibility(View.VISIBLE);
+        populateRecycler(event.getItems());
     }
 
     private void initViews(View view) {
         barterRecycler = view.findViewById(R.id.barterRecycler);
         barterLoader = view.findViewById(R.id.barterLoader);
+        noItems = view.findViewById(R.id.text_no_barter_items);
     }
 
     @Override
@@ -106,6 +116,7 @@ public class BarterTradeFragment extends Fragment implements ItemAdapter.ItemInt
     private void toItemViewActivity(Item item) {
         Intent intent = new Intent(requireContext(), ItemViewActivity.class);
         intent.putExtra("item", item);
+        intent.putExtra("userId", userId);
         startActivity(intent);
     }
 

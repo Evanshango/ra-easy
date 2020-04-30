@@ -18,25 +18,21 @@ import androidx.viewpager.widget.ViewPager;
 import com.bruce.raeasy.R;
 import com.bruce.raeasy.adapters.ImagesUrlPagerAdapter;
 import com.bruce.raeasy.fragments.ImageItemUrlFragment;
-import com.bruce.raeasy.models.Favorite;
 import com.bruce.raeasy.models.ImageUrl;
 import com.bruce.raeasy.models.Item;
 import com.bruce.raeasy.models.User;
+import com.bumptech.glide.Glide;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static com.bruce.raeasy.utils.Constants.FAVORITES;
-import static com.bruce.raeasy.utils.Constants.SHORT_DATE;
+import static com.bruce.raeasy.utils.Constants.ITEMS_REF;
 import static com.bruce.raeasy.utils.Constants.USERS_REF;
 
 public class ItemViewActivity extends BaseActivity {
@@ -48,13 +44,16 @@ public class ItemViewActivity extends BaseActivity {
     private String itemId, userId;
     private List<ImageUrl> imageUrls;
     private TextView itemViewName, itemViewDesc, itemViewPrice, itemViewTradeIn, itemViewDatePosted;
+    private TextView memberSince;
     private ImageView imgFav;
     private TextView traderName, traderPhone;
-    private CircleImageView downloadImg;
+    private CircleImageView traderProfileImg;
     private ConstraintLayout traderProfile;
+    private boolean isFavorite;
 
     //Firebase
-    private CollectionReference usersRef;
+    private CollectionReference usersRef, itemsRef;
+    private Item mItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,18 +62,20 @@ public class ItemViewActivity extends BaseActivity {
 
         FirebaseFirestore database = FirebaseFirestore.getInstance();
         usersRef = database.collection(USERS_REF);
+        itemsRef = database.collection(ITEMS_REF);
 
         Intent intent = getIntent();
-        Item item = intent.getParcelableExtra("item");
-        if (item != null) {
-            itemId = item.getItemId();
-            name = item.getName();
-            description = item.getDesc();
-            price = item.getPrice();
-            tradeIn = item.getTradeIn();
-            datePosted = item.getDate();
-            traderId = item.getOwnerId();
-            imageUrls = item.getImageUrls();
+        mItem = intent.getParcelableExtra("item");
+        userId = intent.getStringExtra("userId");
+        if (mItem != null) {
+            itemId = mItem.getItemId();
+            name = mItem.getName();
+            description = mItem.getDesc();
+            price = mItem.getPrice();
+            tradeIn = mItem.getTradeIn();
+            datePosted = mItem.getDate();
+            traderId = mItem.getOwnerId();
+            imageUrls = mItem.getImageUrls();
         }
 
         initViews();
@@ -93,15 +94,38 @@ public class ItemViewActivity extends BaseActivity {
 
         imgFav.setOnClickListener(v -> addToFavorite());
 
-        downloadImg.setOnClickListener(v -> downloadItemImage());
-
         traderProfile.setOnClickListener(v -> openDialer());
     }
 
     private void checkIfItemIsFavorite() {
+        itemsRef.document(itemId).get().addOnSuccessListener(documentSnapshot -> {
+            Item item = documentSnapshot.toObject(Item.class);
+            performCheck(item);
 
+        });
     }
 
+    private void performCheck(Item item) {
+        if (item != null) {
+            List<String> userIds = item.getUserIds();
+            if (userIds.size() > 0) {
+                for (String id : userIds) {
+                    if (userId.equals(id)) {
+                        isFavorite = true;
+                        imgFav.setImageResource(R.drawable.ic_favorite_filled);
+                    } else {
+                        isFavorite = false;
+                        imgFav.setImageResource(R.drawable.ic_favorite_border);
+                    }
+                }
+            } else {
+                isFavorite = false;
+                imgFav.setImageResource(R.drawable.ic_favorite_border);
+            }
+        } else {
+            Toast.makeText(this, "Item might have been deleted", Toast.LENGTH_SHORT).show();
+        }
+    }
 
     private void openDialer() {
         if (userPhone != null) {
@@ -129,6 +153,10 @@ public class ItemViewActivity extends BaseActivity {
                 traderName.setText(user.getFullName());
                 traderPhone.setText(userPhone);
                 userId = user.getId();
+                memberSince.setText(String.format("Member since %s", user.getRegDate()));
+
+                Glide.with(this).load(user.getImageUrl()).into(traderProfileImg);
+
             } else {
                 traderName.setText(R.string.anonymous);
                 traderPhone.setText(R.string.undefined);
@@ -136,12 +164,18 @@ public class ItemViewActivity extends BaseActivity {
         });
     }
 
-    private void downloadItemImage() {
-        Toast.makeText(this, "Downloading image", Toast.LENGTH_SHORT).show();
-    }
-
     private void addToFavorite() {
-
+        List<String> userIds = new ArrayList<>();
+        userIds.add(userId);
+        if (isFavorite){
+            removeFromList(userId, itemsRef, itemId, mItem.getUserIds());
+            isFavorite = false;
+            imgFav.setImageResource(R.drawable.ic_favorite_border);
+        } else {
+            addToList(userIds, itemsRef, itemId, "Added to Favorites");
+            isFavorite = true;
+            imgFav.setImageResource(R.drawable.ic_favorite_filled);
+        }
     }
 
     private void populateItemInfo() {
@@ -174,10 +208,11 @@ public class ItemViewActivity extends BaseActivity {
         itemViewTradeIn = findViewById(R.id.itemViewTradeIn);
         itemViewDatePosted = findViewById(R.id.itemViewDatePosted);
         imgFav = findViewById(R.id.imgFav);
-        downloadImg = findViewById(R.id.downloadImg);
         traderName = findViewById(R.id.traderName);
         traderPhone = findViewById(R.id.traderPhone);
         traderProfile = findViewById(R.id.traderProfile);
+        traderProfileImg = findViewById(R.id.traderProfileImg);
+        memberSince = findViewById(R.id.member_since);
     }
 
     @Override
