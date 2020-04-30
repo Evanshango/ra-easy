@@ -26,6 +26,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
+import static com.bruce.raeasy.utils.Constants.DEFAULT_IMG;
 import static com.bruce.raeasy.utils.Constants.SHORT_DATE;
 import static com.bruce.raeasy.utils.Constants.USERS_REF;
 
@@ -72,13 +73,13 @@ public class RegisterActivity extends AppCompatActivity {
         regNo = edRegNo.getText().toString().trim();
         password = edPassword.getText().toString().trim();
 
-        if (!phone.isEmpty()){
-            if (!email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-                if (!name.isEmpty()){
-                    if (!institute.isEmpty()){
-                        if (!regNo.isEmpty()){
-                            if (!password.isEmpty()){
-                                if (password.length() >=6){
+        if (!phone.isEmpty()) {
+            if (!email.isEmpty() && Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                if (!name.isEmpty()) {
+                    if (!institute.isEmpty()) {
+                        if (!regNo.isEmpty()) {
+                            if (!password.isEmpty()) {
+                                if (password.length() >= 6) {
                                     doRegister();
                                 } else {
                                     txtPassword.setError("Password too short");
@@ -107,7 +108,7 @@ public class RegisterActivity extends AppCompatActivity {
         regProgress.setVisibility(View.VISIBLE);
         btnContinue.setEnabled(false);
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
-            if (task.isSuccessful()){
+            if (task.isSuccessful()) {
                 FirebaseUser aUser = mAuth.getCurrentUser();
                 saveExtraUserInfo(aUser);
                 regProgress.setVisibility(View.GONE);
@@ -125,10 +126,12 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void saveExtraUserInfo(FirebaseUser aUser) {
-        if (aUser != null){
-            User user = new User(aUser.getUid(), phone, email, name, institute, regNo, createdAt);
+        if (aUser != null) {
+            User user = new User(
+                    aUser.getUid(), phone, email, name, institute, regNo, createdAt, DEFAULT_IMG
+            );
             usersRef.document(aUser.getUid()).set(user).addOnCompleteListener(task -> {
-                if (task.isSuccessful()){
+                if (task.isSuccessful()) {
                     toHomeActivity();
                 } else {
                     Toast.makeText(this, "An error occurred", Toast.LENGTH_SHORT).show();
@@ -141,7 +144,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void toHomeActivity() {
         FirebaseUser user = mAuth.getCurrentUser();
-        if (user != null){
+        if (user != null) {
             Intent intent = new Intent(this, HomeActivity.class);
             startActivity(intent);
             finish();

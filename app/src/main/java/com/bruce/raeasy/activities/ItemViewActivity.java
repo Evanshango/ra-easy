@@ -44,7 +44,7 @@ public class ItemViewActivity extends BaseActivity {
     private Toolbar mToolbar;
     private TabLayout itemTabLayout;
     private ViewPager itemViewPager;
-    private String name, description, price, tradeIn, datePosted, traderId, userPhone, createdAt;
+    private String name, description, price, tradeIn, datePosted, traderId, userPhone;
     private String itemId, userId;
     private List<ImageUrl> imageUrls;
     private TextView itemViewName, itemViewDesc, itemViewPrice, itemViewTradeIn, itemViewDatePosted;
@@ -54,7 +54,7 @@ public class ItemViewActivity extends BaseActivity {
     private ConstraintLayout traderProfile;
 
     //Firebase
-    private CollectionReference usersRef, favRef;
+    private CollectionReference usersRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,8 +63,6 @@ public class ItemViewActivity extends BaseActivity {
 
         FirebaseFirestore database = FirebaseFirestore.getInstance();
         usersRef = database.collection(USERS_REF);
-        favRef = database.collection(FAVORITES);
-        createdAt = new SimpleDateFormat(SHORT_DATE, Locale.getDefault()).format(new Date());
 
         Intent intent = getIntent();
         Item item = intent.getParcelableExtra("item");
@@ -101,21 +99,9 @@ public class ItemViewActivity extends BaseActivity {
     }
 
     private void checkIfItemIsFavorite() {
-        favRef.get().addOnSuccessListener(queryDocumentSnapshots -> {
-           if (!queryDocumentSnapshots.isEmpty()){
-               List<Favorite> favorites = queryDocumentSnapshots.toObjects(Favorite.class);
-               for (Favorite favorite : favorites){
-                   checkItemMatch(favorite);
-               }
-           }
-        });
+
     }
 
-    private void checkItemMatch(Favorite favorite) {
-        if (itemId.equals(favorite.getItemId())){
-            imgFav.setImageResource(R.drawable.ic_favorite_filled);
-        }
-    }
 
     private void openDialer() {
         if (userPhone != null) {
@@ -155,9 +141,7 @@ public class ItemViewActivity extends BaseActivity {
     }
 
     private void addToFavorite() {
-        String favId = favRef.document().getId();
-        Favorite favorite = new Favorite(favId, itemId, createdAt, userId);
-        addFavorite(imgFav, favorite, favRef);
+
     }
 
     private void populateItemInfo() {

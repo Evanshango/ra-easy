@@ -76,4 +76,10 @@
     <string name="date_posted">Date Posted</string>
     <string name="undefined">undefined</string>
     <string name="anonymous">Anonymous</string>
+    <string name="delete">Delete</string>
+    <string name="registration_date">Reg Date</string>
+    <string name="update_profile">Update Profile</string>
+    <string name="edit_profile_details">Edit Profile Details</string>
+    <string name="submit">Submit</string>
+    <string name="no_ads_running">There are no ads currently running…</string>
 </resources>

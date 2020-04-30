@@ -10,13 +10,14 @@ public class Item implements Parcelable {
     private String itemId, name, desc, tradeType, duration, price, tradeIn, amount, date, ownerId,
             transCode;
     private List<ImageUrl> imageUrls;
+    private List<String> userIds;
 
     public Item() {
     }
 
     public Item(String itemId, String name, String desc, String tradeType, String duration,
                 String price, String tradeIn, String amount, String date, String ownerId,
-                String transCode, List<ImageUrl> imageUrls) {
+                String transCode, List<ImageUrl> imageUrls, List<String> userIds) {
         this.itemId = itemId;
         this.name = name;
         this.desc = desc;
@@ -29,6 +30,7 @@ public class Item implements Parcelable {
         this.ownerId = ownerId;
         this.transCode = transCode;
         this.imageUrls = imageUrls;
+        this.userIds = userIds;
     }
 
     protected Item(Parcel in) {
@@ -44,6 +46,7 @@ public class Item implements Parcelable {
         ownerId = in.readString();
         transCode = in.readString();
         imageUrls = in.createTypedArrayList(ImageUrl.CREATOR);
+        userIds = in.createStringArrayList();
     }
 
     @Override
@@ -60,6 +63,7 @@ public class Item implements Parcelable {
         dest.writeString(ownerId);
         dest.writeString(transCode);
         dest.writeTypedList(imageUrls);
+        dest.writeStringList(userIds);
     }
 
     @Override
@@ -173,5 +177,13 @@ public class Item implements Parcelable {
 
     public void setImageUrls(List<ImageUrl> imageUrls) {
         this.imageUrls = imageUrls;
+    }
+
+    public List<String> getUserIds() {
+        return userIds;
+    }
+
+    public void setUserIds(List<String> userIds) {
+        this.userIds = userIds;
     }
 }

@@ -1,62 +1,54 @@
 package com.bruce.raeasy.activities;
 
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.bruce.raeasy.R;
-import com.bruce.raeasy.models.Favorite;
+import com.bruce.raeasy.models.Item;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.SetOptions;
 
-import static com.bruce.raeasy.utils.Constants.ITEM_ID;
-import static com.bruce.raeasy.utils.Constants.USER_ID;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 class BaseActivity extends AppCompatActivity {
 
-    public void addFavorite(ImageView favImg, Favorite favorite, CollectionReference favRef) {
-        Query query = favRef.whereEqualTo(ITEM_ID, favorite.getItemId())
-                .whereEqualTo(USER_ID, favorite.getUserId()).limit(1);
-        query.get().addOnSuccessListener(queryDocumentSnapshots -> {
-            if (!queryDocumentSnapshots.isEmpty()) {
-                for (QueryDocumentSnapshot snapshot : queryDocumentSnapshots) {
-                    Favorite mFavorite = snapshot.toObject(Favorite.class);
-                    checkForMatch(mFavorite, favorite, favImg, favRef);
-                }
-            } else {
-                doFavorite(favorite, favImg, favRef);
-            }
-        });
-    }
+    public void addOrRemoveFavorite(Item item, String userId, CollectionReference itemsRef) {
 
-    private void checkForMatch(Favorite mFavorite, Favorite favorite, ImageView favImg,
-                               CollectionReference favRef) {
-        if (mFavorite != null) {
-            undoFavorite(favImg, favRef, mFavorite.getFavId());
+        List<String> userIds = new ArrayList<>();
+        userIds.add(userId);
+
+        List<String> userIdList = item.getUserIds();
+        if (userIdList.size() > 0) {
+            for (String toFavUserId : userIdList) {
+                if (toFavUserId.equals(userId)) {
+                    removeFromList(userId, itemsRef, item.getItemId(), userIdList);
+                } else {
+                    addToList(userIds, itemsRef, item.getItemId(), "Added to Favorites");
+                }
+            }
         } else {
-            doFavorite(favorite, favImg, favRef);
+            addToList(userIds, itemsRef, item.getItemId(), "Added to Favorites");
         }
     }
 
-    private void undoFavorite(ImageView favImg, CollectionReference favRef, String favId) {
-        favRef.document(favId).delete().addOnSuccessListener(aVoid -> {
-            favImg.setImageResource(R.drawable.ic_favorite_border);
-            Toast.makeText(this, "Removed from favorites", Toast.LENGTH_SHORT).show();
-        });
+    private void addToList(
+            List<String> userIds, CollectionReference itemsRef, String itemId, String message
+    ) {
+        Map<String, Object> favMap = new HashMap<>();
+        favMap.put("userIds", userIds);
+        itemsRef.document(itemId)
+                .set(favMap, SetOptions.merge()).addOnSuccessListener(aVoid -> Toast.makeText(
+                this, message, Toast.LENGTH_SHORT
+        ).show());
     }
 
-    private void doFavorite(Favorite favorite, ImageView favImg, CollectionReference favRef) {
-        favRef.document(favorite.getFavId()).set(favorite).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                favImg.setImageResource(R.drawable.ic_favorite_filled);
-                Toast.makeText(this, "Added to favorites", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "An error occurred", Toast.LENGTH_SHORT).show();
-            }
-        }).addOnFailureListener(e -> Toast.makeText(
-                this, "Check your internet connection", Toast.LENGTH_SHORT).show()
-        );
+    private void removeFromList(
+            String userId, CollectionReference itemsRef, String itemId, List<String> userIdList
+    ) {
+        userIdList.remove(userId);
+        addToList(userIdList, itemsRef, itemId, "Removed from Favorites");
     }
 }

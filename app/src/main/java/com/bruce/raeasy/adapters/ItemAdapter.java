@@ -12,7 +12,6 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bruce.raeasy.R;
-import com.bruce.raeasy.models.Favorite;
 import com.bruce.raeasy.models.Item;
 import com.bumptech.glide.Glide;
 
@@ -23,7 +22,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
     private Context mContext;
     private ItemInteraction mItemInteraction;
     private List<Item> mItems;
-    private List<Favorite> mFavorites;
+    private String mUserId;
 
     public ItemAdapter(Context context, ItemInteraction itemInteraction) {
         mContext = context;
@@ -48,9 +47,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
         return mItems.size();
     }
 
-    public void setData(List<Item> items, List<Favorite> favorites){
+    public void setData(List<Item> items, String userId) {
         mItems = items;
-        mFavorites = favorites;
+        mUserId = userId;
         notifyDataSetChanged();
     }
 
@@ -65,7 +64,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
             super(itemView);
             mItemInteraction = itemInteraction;
             itemImg = itemView.findViewById(R.id.itemImg);
-            favImg = itemView.findViewById(R.id.imgFavorite);
+            favImg = itemView.findViewById(R.id.favImg);
             name = itemView.findViewById(R.id.txtItemName);
             price = itemView.findViewById(R.id.txtItemAmount);
             itemCard = itemView.findViewById(R.id.itemCard);
@@ -76,7 +75,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
 
         @Override
         public void onClick(View v) {
-            mItemInteraction.itemClicked(v, mItems.get(getAdapterPosition()), favImg);
+            mItemInteraction.itemClicked(v, mItems.get(getAdapterPosition()));
         }
 
         void bind(Item item) {
@@ -91,16 +90,23 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemHolder> {
         }
 
         private void toggleFavIcon(Item item) {
-            for (Favorite favorite : mFavorites){
-                if (favorite.getItemId().equals(item.getItemId())){
-                    favImg.setImageResource(R.drawable.ic_favorite_filled);
+            List<String> userIds = item.getUserIds();
+            if (userIds.size() > 0){
+                for (String userId : userIds) {
+                    if (userId.equals(mUserId)) {
+                        favImg.setImageResource(R.drawable.ic_favorite_filled);
+                    } else {
+                        favImg.setImageResource(R.drawable.ic_favorite_border);
+                    }
                 }
+            } else {
+                favImg.setImageResource(R.drawable.ic_favorite_border);
             }
         }
     }
 
     public interface ItemInteraction {
 
-        void itemClicked(View view, Item item, ImageView favImg);
+        void itemClicked(View view, Item item);
     }
 }

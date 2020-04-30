@@ -53,18 +53,9 @@
                     android:id="@+id/profileImage"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:src="@drawable/profile"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/addImg"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_add"
-                    app:layout_constraintBottom_toBottomOf="@+id/profileImage"
-                    app:layout_constraintEnd_toEndOf="@+id/profileImage" />
 
                 <LinearLayout
                     android:id="@+id/linearLayout2"
@@ -146,13 +137,27 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/myAdds" />
 
-            <FrameLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/addLayout"
                 android:layout_width="0dp"
                 android:layout_height="100dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/shortlistedAdds" />
+                android:background="@color/lightBackground"
+                app:layout_constraintTop_toBottomOf="@+id/shortlistedAdds" >
+
+                <TextView
+                    android:id="@+id/txtNoAds"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/no_ads_running"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
                 android:id="@+id/aboutUs"

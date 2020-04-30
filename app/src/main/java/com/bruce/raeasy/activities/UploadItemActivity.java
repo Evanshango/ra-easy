@@ -155,7 +155,7 @@ public class UploadItemActivity extends AppCompatActivity {
 
     private void proceedToPayment() {
         Item item = new Item("", name, desc, tradeType, duration, price, tradeIn, "",
-                "", userId, "", null);
+                "", userId, "", null, null);
         Intent intent = new Intent(this, PaymentActivity.class);
         intent.putExtra("item", item);
         intent.putExtra("imageUris", new ExtraImgUri(mImageUris));

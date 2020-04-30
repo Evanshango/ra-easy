@@ -2,14 +2,14 @@ package com.bruce.raeasy.models;
 
 public class User {
 
-    private String id, phone, email, fullName, institute, regNo, regDate;
+    private String id, phone, email, fullName, institute, regNo, regDate, imageUrl;
 
     public User() {
     }
 
     public User(
             String id, String phone, String email, String fullName, String institute, String regNo,
-            String regDate
+            String regDate, String imageUrl
     ) {
         this.id = id;
         this.phone = phone;
@@ -18,6 +18,7 @@ public class User {
         this.institute = institute;
         this.regNo = regNo;
         this.regDate = regDate;
+        this.imageUrl = imageUrl;
     }
 
     public String getId() {
@@ -74,5 +75,27 @@ public class User {
 
     public void setRegDate(String regDate) {
         this.regDate = regDate;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                ", fullName='" + fullName + '\'' +
+                ", institute='" + institute + '\'' +
+                ", regNo='" + regNo + '\'' +
+                ", regDate='" + regDate + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                '}';
     }
 }

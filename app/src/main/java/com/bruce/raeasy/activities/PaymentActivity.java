@@ -145,7 +145,7 @@ public class PaymentActivity extends AppCompatActivity implements PaymentDialog.
 
         Item item = new Item(
                 itemId, name, desc, tradeType.toLowerCase(), duration, price, tradeIn, advAmt,
-                createdAt, ownerId, transCode, imageUrlList
+                createdAt, ownerId, transCode, imageUrlList, null
         );
 
         itemsRef.document(itemId).set(item).addOnCompleteListener(task -> {

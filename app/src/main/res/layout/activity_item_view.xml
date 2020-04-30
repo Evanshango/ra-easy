@@ -253,7 +253,6 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    android:src="@drawable/profile"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
 
@@ -280,6 +279,12 @@
                         android:layout_height="wrap_content"
                         android:padding="4dp"
                         android:textSize="@dimen/small_txt" />
+                    <TextView
+                        android:id="@+id/member_since"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/notification_txt"
+                        android:padding="4dp"/>
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 

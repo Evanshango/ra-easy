@@ -7,4 +7,5 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="small_txt">10sp</dimen>
     <dimen name="smaller_txt">10sp</dimen>
+    <dimen name="notification_txt">8sp</dimen>
 </resources>

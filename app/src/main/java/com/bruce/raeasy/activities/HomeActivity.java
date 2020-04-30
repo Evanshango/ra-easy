@@ -2,7 +2,6 @@ package com.bruce.raeasy.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -16,14 +15,16 @@ import com.bruce.raeasy.R;
 import com.bruce.raeasy.adapters.HomePagerAdapter;
 import com.bruce.raeasy.fragments.BarterTradeFragment;
 import com.bruce.raeasy.fragments.OnSaleFragment;
-import com.bruce.raeasy.models.Favorite;
-import com.bruce.raeasy.utils.FavoriteEvent;
+import com.bruce.raeasy.models.Item;
+import com.bruce.raeasy.utils.BarterEvent;
+import com.bruce.raeasy.utils.SellEvent;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -31,11 +32,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static com.bruce.raeasy.utils.Constants.FAVORITES;
+import static com.bruce.raeasy.utils.Constants.DATE;
+import static com.bruce.raeasy.utils.Constants.ITEMS_REF;
+import static com.bruce.raeasy.utils.Constants.TRADE_TYPE;
 
 public class HomeActivity extends BaseActivity {
 
-    private static final String TAG = "HomeActivity";
+    private static final String tradeTypeBarter = "barter";
+    private static final String tradeTypeSale = "sell";
     private ViewPager homeViewPager;
     private TabLayout homeTabs;
     private Toolbar mToolbar;
@@ -43,7 +47,7 @@ public class HomeActivity extends BaseActivity {
     private String userId;
 
     //Firebase
-    private CollectionReference favRef;
+    private CollectionReference itemsRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +57,8 @@ public class HomeActivity extends BaseActivity {
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser user = auth.getCurrentUser();
         FirebaseFirestore database = FirebaseFirestore.getInstance();
-        favRef = database.collection(FAVORITES);
+        itemsRef = database.collection(ITEMS_REF);
+
         if (user != null){
             userId = user.getUid();
         } else {
@@ -77,29 +82,54 @@ public class HomeActivity extends BaseActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        observerFavChanges();
+        observerBarterItems();
+        observerSaleItems();
     }
 
-    private void observerFavChanges() {
-        favRef.addSnapshotListener(this, (queryDocumentSnapshots, e) -> {
-           if (e != null){
-               Toast.makeText(this, "Fetching favorites error", Toast.LENGTH_SHORT).show();
-               return;
-           }
-           if (queryDocumentSnapshots != null){
-               List<Favorite> favorites = new ArrayList<>();
-               favorites.clear();
-               favorites.addAll(queryDocumentSnapshots.toObjects(Favorite.class));
-               emitFavorites(favorites);
-           }
+    private void observerSaleItems() {
+        Query query = itemsRef.whereEqualTo(TRADE_TYPE, tradeTypeSale)
+                .orderBy(DATE, Query.Direction.DESCENDING);
+        query.addSnapshotListener(this, (queryDocumentSnapshots, e) -> {
+            if (e != null){
+                Toast.makeText(this, "Fetching Items error", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (queryDocumentSnapshots != null){
+                List<Item> items = new ArrayList<>();
+                items.clear();
+                items.addAll(queryDocumentSnapshots.toObjects(Item.class));
+                emitSaleItems(items);
+            }
         });
     }
 
-    private void emitFavorites(List<Favorite> favorites) {
-        FavoriteEvent event = new FavoriteEvent();
-        event.setFavorites(favorites);
+    private void emitSaleItems(List<Item> items) {
+        SellEvent event = new SellEvent();
+        event.setItems(items);
         EventBus.getDefault().post(event);
-        Log.d(TAG, "emitFavorites: " + favorites.size());
+    }
+
+    private void observerBarterItems() {
+        Query query = itemsRef.whereEqualTo(TRADE_TYPE, tradeTypeBarter)
+                .orderBy(DATE, Query.Direction.DESCENDING);
+        query.addSnapshotListener(this, (queryDocumentSnapshots, e) -> {
+            if (e != null){
+                Toast.makeText(this, "Fetching Items error", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (queryDocumentSnapshots != null){
+                List<Item> items = new ArrayList<>();
+                items.clear();
+                items.addAll(queryDocumentSnapshots.toObjects(Item.class));
+                emitBarterItems(items);
+            }
+        });
+    }
+
+    private void emitBarterItems(List<Item> items) {
+        BarterEvent event = new BarterEvent();
+        event.setItems(items);
+        EventBus.getDefault().post(event);
     }
 
     private void toWelcomeActivity() {
@@ -132,24 +162,15 @@ public class HomeActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                toSettings();
-                return true;
-            case R.id.action_account:
-                toAccount();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.action_settings) {
+            toAccount();
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     private void toAccount() {
         Intent intent = new Intent(this, AccountActivity.class);
         startActivity(intent);
-    }
-
-    private void toSettings() {
-        Toast.makeText(this, "To Settings", Toast.LENGTH_SHORT).show();
     }
 }
