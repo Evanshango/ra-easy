@@ -4,7 +4,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,6 +52,7 @@ public class ItemViewActivity extends BaseActivity {
     private CircleImageView traderProfileImg;
     private ConstraintLayout traderProfile;
     private boolean isFavorite;
+    private ProgressBar favProgress, traderInfoLoader;
 
     //Firebase
     private CollectionReference usersRef, itemsRef;
@@ -98,32 +101,32 @@ public class ItemViewActivity extends BaseActivity {
     }
 
     private void checkIfItemIsFavorite() {
+        favProgress.setVisibility(View.VISIBLE);
         itemsRef.document(itemId).get().addOnSuccessListener(documentSnapshot -> {
             Item item = documentSnapshot.toObject(Item.class);
+            assert item != null;
             performCheck(item);
-
         });
     }
 
     private void performCheck(Item item) {
-        if (item != null) {
-            List<String> userIds = item.getUserIds();
-            if (userIds.size() > 0) {
-                for (String id : userIds) {
-                    if (userId.equals(id)) {
-                        isFavorite = true;
-                        imgFav.setImageResource(R.drawable.ic_favorite_filled);
-                    } else {
-                        isFavorite = false;
-                        imgFav.setImageResource(R.drawable.ic_favorite_border);
-                    }
+        List<String> userIds = item.getUserIds();
+        if (userIds.size() > 0) {
+            for (String id : userIds) {
+                if (userId.equals(id)) {
+                    favProgress.setVisibility(View.GONE);
+                    isFavorite = true;
+                    imgFav.setImageResource(R.drawable.ic_favorite_filled);
+                } else {
+                    favProgress.setVisibility(View.GONE);
+                    isFavorite = false;
+                    imgFav.setImageResource(R.drawable.ic_favorite_border);
                 }
-            } else {
-                isFavorite = false;
-                imgFav.setImageResource(R.drawable.ic_favorite_border);
             }
         } else {
-            Toast.makeText(this, "Item might have been deleted", Toast.LENGTH_SHORT).show();
+            favProgress.setVisibility(View.GONE);
+            isFavorite = false;
+            imgFav.setImageResource(R.drawable.ic_favorite_border);
         }
     }
 
@@ -146,18 +149,20 @@ public class ItemViewActivity extends BaseActivity {
     }
 
     private void fetchTraderDetails() {
+        traderInfoLoader.setVisibility(View.VISIBLE);
         usersRef.document(traderId).get().addOnSuccessListener(documentSnapshot -> {
             User user = documentSnapshot.toObject(User.class);
             if (user != null) {
+                traderInfoLoader.setVisibility(View.GONE);
                 userPhone = user.getPhone();
                 traderName.setText(user.getFullName());
                 traderPhone.setText(userPhone);
-                userId = user.getId();
                 memberSince.setText(String.format("Member since %s", user.getRegDate()));
 
                 Glide.with(this).load(user.getImageUrl()).into(traderProfileImg);
 
             } else {
+                traderInfoLoader.setVisibility(View.GONE);
                 traderName.setText(R.string.anonymous);
                 traderPhone.setText(R.string.undefined);
             }
@@ -213,6 +218,8 @@ public class ItemViewActivity extends BaseActivity {
         traderProfile = findViewById(R.id.traderProfile);
         traderProfileImg = findViewById(R.id.traderProfileImg);
         memberSince = findViewById(R.id.member_since);
+        favProgress = findViewById(R.id.favProgress);
+        traderInfoLoader = findViewById(R.id.traderInfoLoader);
     }
 
     @Override

@@ -104,6 +104,16 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/textView4" />
 
+            <ProgressBar
+                android:id="@+id/favProgress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/textView4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/textView4" />
+
             <TextView
                 android:id="@+id/itemViewName"
                 android:layout_width="wrap_content"
@@ -247,6 +257,7 @@
                     app:layout_constraintStart_toStartOf="parent" />
 
                 <LinearLayout
+                    android:id="@+id/linearLayout4"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
@@ -269,13 +280,24 @@
                         android:layout_height="wrap_content"
                         android:padding="4dp"
                         android:textSize="@dimen/small_txt" />
+
                     <TextView
                         android:id="@+id/member_since"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/notification_txt"
-                        android:padding="4dp"/>
+                        android:padding="4dp"
+                        android:textSize="@dimen/notification_txt" />
                 </LinearLayout>
+
+                <ProgressBar
+                    android:id="@+id/traderInfoLoader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@+id/linearLayout4"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/linearLayout4" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
